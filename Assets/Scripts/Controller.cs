@@ -2,167 +2,162 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Код для поворота сегментами
+// Код для поворота квадратов (холдера) - он вращает все квадраты за собой
 
 public class Controller : MonoBehaviour
 {
 
-    public GameObject handler; // префаб хэндлера
-    KeyCode button = KeyCode.A; // переменная хранения нажатой клавиши для выбора позии хэндлера (A - пустое значение)
-    bool isRotate = false; // происходит ли вращение - инзначально нет
+    public GameObject holder; // переменная для хранения префаба холдера (используется для его инициации)
+    KeyCode button; // переменная хранения нажатой клавиши для выбора позиции холдера
+    bool isRotate = false; // происходит ли вращение холдера - инзначально нет
 
-    // Создание хэндлера
-    void GenerateHandler(int pos) // создание хэндлера на одной из 9 позиций
+    // Метод создания холдера
+    void GenerateHolder(int pos) // создание холдера на одной из 9 позиций
     {
-        if (GameObject.FindGameObjectWithTag("Handler") == true) // если уже есть хэндлер
+        if (GameObject.FindGameObjectWithTag("Holder") == true) // если уже есть холдер
         {
             return; // если он есть то ничего не делать
         }
-        else // если хэндлера нет то начать его создание
+        else // если холдера нет то начать его создание
         {
-            Vector3 handlerPosition = new Vector3(); // переменная позиции хэндлера
-            float handlerAngle = 0; // переменная угла вращения хэндлера
-            Vector3 handlerAxis = new Vector3(); // переменная оси вращения хэндлера
+            Vector3 holderPosition = new Vector3(); // переменная позиции холдера
+            float holderAngle = 0; // переменная угла вращения холдера
+            Vector3 holderAxis = new Vector3(); // переменная оси вращения холдера
 
-            switch (pos) // задать позицию, согласно той стороне, где он будет вращаться
+            switch (pos) // задать позицию, согласно той стороне, на которой он будет вращаться
             {
                 case 0: // сторона 0
-                    handlerPosition = new Vector3(1.5f, 1f, 2.5f);
-                    handlerAngle = 0;
-                    handlerAxis = new Vector3(0f, 0f, 1f);
+                    holderPosition = new Vector3(1.5f, 1f, 2.5f); // позиция
+                    holderAngle = 0; // угол поворота при инициации
+                    holderAxis = new Vector3(0f, 0f, 1f); // ось вокруг которой необходимо повернуть холдер при инициации
                     break;
                 case 1: // сторона 1
-                    handlerPosition = new Vector3(0f, 1f, 1f);
-                    handlerAngle = 90;
-                    handlerAxis = new Vector3(0f, 1f, 0f);
+                    holderPosition = new Vector3(0f, 1f, 1f);
+                    holderAngle = 90;
+                    holderAxis = new Vector3(0f, 1f, 0f);
                     break;
                 case 2: // сторона 2
-                    handlerPosition = new Vector3(1.5f, 1f, -0.5f);
-                    handlerAngle = 180;
-                    handlerAxis = new Vector3(0f, 1f, 0f);
+                    holderPosition = new Vector3(1.5f, 1f, -0.5f);
+                    holderAngle = 180;
+                    holderAxis = new Vector3(0f, 1f, 0f);
                     break;
                 case 3:
-                    handlerPosition = new Vector3(3f, 1f, 1f);
-                    handlerAngle = 270;
-                    handlerAxis = new Vector3(0f, 1f, 0f);
+                    holderPosition = new Vector3(3f, 1f, 1f);
+                    holderAngle = 270;
+                    holderAxis = new Vector3(0f, 1f, 0f);
                     break;
                 case 4:
-                    handlerPosition = new Vector3(1.5f, 2.5f, 1f);
-                    handlerAngle = 90;
-                    handlerAxis = new Vector3(1f, 0f, 0f);
+                    holderPosition = new Vector3(1.5f, 2.5f, 1f);
+                    holderAngle = 90;
+                    holderAxis = new Vector3(1f, 0f, 0f);
                     break;
                 case 5:
-                    handlerPosition = new Vector3(1.5f, -0.5f, 1f);
-                    handlerAngle = 270;
-                    handlerAxis = new Vector3(1f, 0f, 0f);
+                    holderPosition = new Vector3(1.5f, -0.5f, 1f);
+                    holderAngle = 270;
+                    holderAxis = new Vector3(1f, 0f, 0f);
                     break;
                 case 6:
-                    handlerPosition = new Vector3(1.5f, 1f, 1f);
-                    handlerAngle = 90;
-                    handlerAxis = new Vector3(1f, 0f, 0f);
+                    holderPosition = new Vector3(1.5f, 1f, 1f);
+                    holderAngle = 90;
+                    holderAxis = new Vector3(1f, 0f, 0f);
                     break;
                 case 7:
-                    handlerPosition = new Vector3(1.5f, 1f, 1f);
-                    handlerAngle = 0;
-                    handlerAxis = new Vector3(0f, 0f, 0f);
+                    holderPosition = new Vector3(1.5f, 1f, 1f);
+                    holderAngle = 0;
+                    holderAxis = new Vector3(0f, 0f, 0f);
                     break;
                 case 8:
-                    handlerPosition = new Vector3(1.5f, 1f, 1f);
-                    handlerAngle = 90;
-                    handlerAxis = new Vector3(0f, 1f, 0f);
+                    holderPosition = new Vector3(1.5f, 1f, 1f);
+                    holderAngle = 90;
+                    holderAxis = new Vector3(0f, 1f, 0f);
                     break;
 
                 default:
-                    handlerPosition = new Vector3(1.5f, 1f, 2.5f);
-                    handlerAngle = 0;
-                    handlerAxis = new Vector3(0f, 0f, 0f);
+                    holderPosition = new Vector3(1.5f, 1f, 2.5f);
+                    holderAngle = 0;
+                    holderAxis = new Vector3(0f, 0f, 0f);
                     break;
             }
-            // создание экземпляра хэндлера по заданным параметрам
-            Instantiate(handler, handlerPosition, Quaternion.AngleAxis(handlerAngle,handlerAxis));
-
-            
+            // создание экземпляра холдера по заданным параметрам
+            Instantiate(holder, holderPosition, Quaternion.AngleAxis(holderAngle,holderAxis));
         }
     }
 
 
-    
-    // GUI работает с EVENT, обработка нажатой клавиши и запуск генерации и вращения
+    // GUI работает с EVENT, обработка нажатой клавиши и запуск генерации и вращения холдера
     void OnGUI()
     {
-        // если текущая кнопка А или совершается поворот, то не обрабатывать нажатия
+        // если совершается поворот, то не обрабатывать нажатия
         if (isRotate) { }
 
-        else // если не А, то проверять нажатия
+        else // если нет вращений, то проверять нажатия
         {
-
-            button = Event.current.keyCode; // получить нажатую кнопку
+            button = Event.current.keyCode; // получить нажатую сейчас кнопку
             // запустить проверку нажатой кнопки 
             switch (button)
             {
                 case (KeyCode.Keypad0): // если нажата 0
-                    GenerateHandler(0); // то строить хэндлер на стороне 0
+                    GenerateHolder(0); // то строить хэндлер на стороне 0
                     isRotate = true; // сигнал что поворот осуществляется
-                    StartCoroutine(RotateHandler(0)); // запустить корутин поворота
+                    StartCoroutine(RotateHolder(0)); // запустить цикл (корутин) поворота
                     break;
                 case (KeyCode.Keypad1):
-                    GenerateHandler(1);
+                    GenerateHolder(1);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(1));
+                    StartCoroutine(RotateHolder(1));
                     break;
                 case (KeyCode.Keypad2):
-                    GenerateHandler(2);
+                    GenerateHolder(2);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(2));
+                    StartCoroutine(RotateHolder(2));
                     break;
                 case (KeyCode.Keypad3):
-                    GenerateHandler(3);
+                    GenerateHolder(3);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(3));
+                    StartCoroutine(RotateHolder(3));
                     break;
                 case (KeyCode.Keypad4):
-                    GenerateHandler(4);
+                    GenerateHolder(4);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(4));
+                    StartCoroutine(RotateHolder(4));
                     break;
                 case (KeyCode.Keypad5):
-                    GenerateHandler(5);
+                    GenerateHolder(5);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(5));
+                    StartCoroutine(RotateHolder(5));
                     break;
                 case (KeyCode.Keypad6):
-                    GenerateHandler(6);
+                    GenerateHolder(6);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(6));
+                    StartCoroutine(RotateHolder(6));
                     break;
                 case (KeyCode.Keypad7):
-                    GenerateHandler(7);
+                    GenerateHolder(7);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(7));
+                    StartCoroutine(RotateHolder(7));
                     break;
                 case (KeyCode.Keypad8):
-                    GenerateHandler(8);
+                    GenerateHolder(8);
                     isRotate = true;
-                    StartCoroutine(RotateHandler(8));
+                    StartCoroutine(RotateHolder(8));
                     break;
-                default:
+                default: // Если нажата любая другая кнопка - ничего не делать
                     break;
 
             }
-        }// перебор нажатых клавиш для задания позиции хэндлеру
+        }
         
         
 
     }
 
-    // Вращение хэндлера
-    IEnumerator RotateHandler(int axis) // поворот хэндлера по его номеру
+    // Вращение хэндлера (корутин)
+    IEnumerator RotateHolder(int axis) // поворот холдера по оси, согласно его позиции (номеру его позиции)
     {
-        
-        for (int i = 0; i != 46; i++) // 45 кадров поворота на 2 градус за кадр
+        for (int i = 0; i != 46; i++) // 46 кадров поворота на 2 градуса за кадр (один кадр лишний для доворота детей холдера)
         {
             Vector3 hanlderAxisRotate = new Vector3(); // пустая переменная для хранения оси вращения
-            // определение оси вращения по нажатой кнопке
+            // определение оси вращения холдера по нажатой кнопке
             switch (axis)
             {
                 case 0:
@@ -194,15 +189,13 @@ public class Controller : MonoBehaviour
                     break;
             } 
 
-            GameObject.FindGameObjectWithTag("Handler").transform.Rotate(hanlderAxisRotate, 2f); // поворот на 2 градуса каждый кадр
+            GameObject.FindGameObjectWithTag("Holder").transform.Rotate(hanlderAxisRotate, 2f); // поворот на 2 градуса за каждый кадр
             yield return null; // сброс для покадрового просчета цикла
             
         } // по оконцчании анимации
-        GameObject.FindGameObjectWithTag("Handler").transform.DetachChildren();
-        Destroy(GameObject.FindGameObjectWithTag("Handler")); // удалить хэндлер после поворота спутя малое время
-        isRotate = false; // поворот прекращен
-
-
+        GameObject.FindGameObjectWithTag("Holder").transform.DetachChildren(); // удалить связь с детьми
+        Destroy(GameObject.FindGameObjectWithTag("Holder")); // удалить холдер после поворота
+        isRotate = false; // поворот прекращен (теперь будет учет нажатия кнопок)
     }
 
 }
