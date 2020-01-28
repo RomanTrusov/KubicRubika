@@ -11,6 +11,7 @@ public class Controller : MonoBehaviour
     KeyCode button = KeyCode.A; // переменная хранения нажатой клавиши для выбора позии хэндлера (A - пустое значение)
     bool isRotate = false; // происходит ли вращение - инзначально нет
 
+    // Создание хэндлера
     void GenerateHandler(int pos) // создание хэндлера на одной из 9 позиций
     {
         if (GameObject.FindGameObjectWithTag("Handler") == true) // если уже есть хэндлер
@@ -19,7 +20,6 @@ public class Controller : MonoBehaviour
         }
         else // если хэндлера нет то начать его создание
         {
-            print("хэндлер создается");
             Vector3 handlerPosition = new Vector3(); // переменная позиции хэндлера
             float handlerAngle = 0; // переменная угла вращения хэндлера
             Vector3 handlerAxis = new Vector3(); // переменная оси вращения хэндлера
@@ -80,20 +80,14 @@ public class Controller : MonoBehaviour
             }
             // создание экземпляра хэндлера по заданным параметрам
             Instantiate(handler, handlerPosition, Quaternion.AngleAxis(handlerAngle,handlerAxis));
-            print("Хэндлер создан");
+
+            
         }
     }
 
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     
-    // GUI работает с EVENT
+    // GUI работает с EVENT, обработка нажатой клавиши и запуск генерации и вращения
     void OnGUI()
     {
         // если текущая кнопка А или совершается поворот, то не обрабатывать нажатия
@@ -107,7 +101,6 @@ public class Controller : MonoBehaviour
             switch (button)
             {
                 case (KeyCode.Keypad0): // если нажата 0
-                    print("Нажат 0"); //++
                     GenerateHandler(0); // то строить хэндлер на стороне 0
                     isRotate = true; // сигнал что поворот осуществляется
                     StartCoroutine(RotateHandler(0)); // запустить корутин поворота
@@ -162,11 +155,11 @@ public class Controller : MonoBehaviour
 
     }
 
-
+    // Вращение хэндлера
     IEnumerator RotateHandler(int axis) // поворот хэндлера по его номеру
     {
         
-        for (int i = 0; i != 45; i++) // 45 кадров поворота на 2 градус за кадр
+        for (int i = 0; i != 46; i++) // 45 кадров поворота на 2 градус за кадр
         {
             Vector3 hanlderAxisRotate = new Vector3(); // пустая переменная для хранения оси вращения
             // определение оси вращения по нажатой кнопке
@@ -205,6 +198,7 @@ public class Controller : MonoBehaviour
             yield return null; // сброс для покадрового просчета цикла
             
         } // по оконцчании анимации
+        GameObject.FindGameObjectWithTag("Handler").transform.DetachChildren();
         Destroy(GameObject.FindGameObjectWithTag("Handler")); // удалить хэндлер после поворота спутя малое время
         isRotate = false; // поворот прекращен
 
