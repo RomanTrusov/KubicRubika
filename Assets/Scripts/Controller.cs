@@ -29,7 +29,7 @@ public class Controller : MonoBehaviour
                 case 0: // сторона 0
                     handlerPosition = new Vector3(1.5f, 1f, 2.5f);
                     handlerAngle = 0;
-                    handlerAxis = new Vector3(0f, 0f, 0f);
+                    handlerAxis = new Vector3(0f, 0f, 1f);
                     break;
                 case 1: // сторона 1
                     handlerPosition = new Vector3(0f, 1f, 1f);
@@ -110,31 +110,47 @@ public class Controller : MonoBehaviour
                     print("Нажат 0"); //++
                     GenerateHandler(0); // то строить хэндлер на стороне 0
                     isRotate = true; // сигнал что поворот осуществляется
-                    StartCoroutine(RotateHandler()); // запустить корутин поворота
+                    StartCoroutine(RotateHandler(0)); // запустить корутин поворота
                     break;
                 case (KeyCode.Keypad1):
                     GenerateHandler(1);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(1));
                     break;
                 case (KeyCode.Keypad2):
                     GenerateHandler(2);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(2));
                     break;
                 case (KeyCode.Keypad3):
                     GenerateHandler(3);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(3));
                     break;
                 case (KeyCode.Keypad4):
                     GenerateHandler(4);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(4));
                     break;
                 case (KeyCode.Keypad5):
                     GenerateHandler(5);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(5));
                     break;
                 case (KeyCode.Keypad6):
                     GenerateHandler(6);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(6));
                     break;
                 case (KeyCode.Keypad7):
                     GenerateHandler(7);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(7));
                     break;
                 case (KeyCode.Keypad8):
                     GenerateHandler(8);
+                    isRotate = true;
+                    StartCoroutine(RotateHandler(8));
                     break;
                 default:
                     break;
@@ -145,38 +161,52 @@ public class Controller : MonoBehaviour
         
 
     }
-    /* // Не используется, так как тестируется метод с корутином
-    // ФикседАпдейт для корректного поворота
-    private void FixedUpdate()
-    {
 
-        //if (handler == null) button = KeyCode.A; // сброс инфы о нажатой клавише если хэндлера нет
 
-        if (isRotate == -1) // если сигнал на поворот пустой
-        {
-            return; // ничего не делать
-        }
-        else //иначе
-        {
-            //Debug.Log("Signal");
-            RotateHandler(); // поворот вокруг оси, содержащейся в сигнале на поворот
-            isRotate = -1; // сброс сигнала на поворот
-        }
-    }
-    */
-
-    IEnumerator RotateHandler() // поворот хэндлера по его номеру
+    IEnumerator RotateHandler(int axis) // поворот хэндлера по его номеру
     {
         
-        //GameObject.FindGameObjectWithTag("Handler").transform.Rotate(new Vector3(0f, 0f, 1f), 1f); // поворот
-        for (int i = 0; i != 45; i++) // 90 кадров поворота на 1 градус
+        for (int i = 0; i != 45; i++) // 45 кадров поворота на 2 градус за кадр
         {
-            GameObject.FindGameObjectWithTag("Handler").transform.Rotate(new Vector3(0f, 0f, 1f), 2f); // поворот на один градус каждый кадр
+            Vector3 hanlderAxisRotate = new Vector3(); // пустая переменная для хранения оси вращения
+            // определение оси вращения по нажатой кнопке
+            switch (axis)
+            {
+                case 0:
+                    hanlderAxisRotate = new Vector3(0f, 0f, 1f);
+                    break;
+                case 1:
+                    hanlderAxisRotate = new Vector3(0f, 0f, -1f);
+                    break;
+                case 2:
+                    hanlderAxisRotate = new Vector3(0f, 0f, 1f);
+                    break;
+                case 3:
+                    hanlderAxisRotate = new Vector3(0f, 0f, -1f);
+                    break;
+                case 4:
+                    hanlderAxisRotate = new Vector3(0f, 0f, -1f);
+                    break;
+                case 5:
+                    hanlderAxisRotate = new Vector3(0f, 0f, 1f);
+                    break;
+                case 6:
+                    hanlderAxisRotate = new Vector3(0f, 0f, -1f);
+                    break;
+                case 7:
+                    hanlderAxisRotate = new Vector3(0f, 0f, 1f);
+                    break;
+                case 8:
+                    hanlderAxisRotate = new Vector3(0f, 0f, -1f);
+                    break;
+            } 
+
+            GameObject.FindGameObjectWithTag("Handler").transform.Rotate(hanlderAxisRotate, 2f); // поворот на 2 градуса каждый кадр
             yield return null; // сброс для покадрового просчета цикла
             
         } // по оконцчании анимации
+        Destroy(GameObject.FindGameObjectWithTag("Handler")); // удалить хэндлер после поворота спутя малое время
         isRotate = false; // поворот прекращен
-        Destroy(GameObject.FindGameObjectWithTag("Handler")); // удалить хэндлер после поворота
 
 
     }
