@@ -154,7 +154,7 @@ public class Controller : MonoBehaviour
     // Вращение хэндлера (корутин)
     IEnumerator RotateHolder(int axis) // поворот холдера по оси, согласно его позиции (номеру его позиции)
     {
-        for (int i = 0; i != 46; i++) // 46 кадров поворота на 2 градуса за кадр (один кадр лишний для доворота детей холдера)
+        for (int i = 0; i != 31; i++) // 46 кадров поворота на 2 градуса за кадр (один кадр лишний для доворота детей холдера)
         {
             Vector3 hanlderAxisRotate = new Vector3(); // пустая переменная для хранения оси вращения
             // определение оси вращения холдера по нажатой кнопке
@@ -189,7 +189,7 @@ public class Controller : MonoBehaviour
                     break;
             } 
 
-            GameObject.FindGameObjectWithTag("Holder").transform.Rotate(hanlderAxisRotate, 2f); // поворот на 2 градуса за каждый кадр
+            GameObject.FindGameObjectWithTag("Holder").transform.Rotate(hanlderAxisRotate, 3f); // поворот на 2 градуса за каждый кадр
             yield return null; // сброс для покадрового просчета цикла
             
         } // по оконцчании анимации
